@@ -16,7 +16,9 @@ containing the names of students in the class.  The name of the file has
 to correspond to the name of your Zoom meeting for the class.  For example, 
 I have a "OS.csv" file because OS is the name of my OS class meetings.
 
-Here is an example of the first few lines of a roster file:
+1. Make sure attendance.py is in your PATH.
+
+Here are the first few lines of an example roster file:
 
     First name,Last name,alias
     Armon,Factor,
@@ -24,8 +26,6 @@ Here is an example of the first few lines of a roster file:
     Ana,Perez,
 
 The alias column gives alternative names that might appear in the Zoom data.
-
-1. Make sure attendance.py is in your PATH.
 
 ### Creating plots:
 
