@@ -32,8 +32,8 @@ The alias column gives alternative names that might appear in the Zoom data.
 1.  After class meets, download a meeting report on zoom.us and store it in the Zoom directory 
 for that zoom meeting.  Don't change the file name.
 
-1.  Call the attendance.py with the zoom directory name, course name,date, and start/end times.
-For example:
+1.  At the command line, call attendance.py with the zoom directory name, course name,date, 
+and start/end times.  For example:
 
 attendance.py "/mnt/c/CSUMB/Spring21/video/" "OS" "2021-02-03" "10:00:00 AM" "11:50:00 AM"
 
