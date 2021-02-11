@@ -29,8 +29,8 @@ The alias column gives alternative names that might appear in the Zoom data.
 
 ### Creating plots:
 
-1.  After each class, download a meeting report and store it in directory for
-that zoom meeting.  Don't change the file name.
+1.  After class meets, download a meeting report on zoom.us and store it in the Zoom directory 
+for that zoom meeting.  Don't change the file name.
 
 1.  Call the attendance.py with the zoom directory name, course name,date, and start/end times.
 For example:
