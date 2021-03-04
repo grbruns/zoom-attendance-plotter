@@ -32,12 +32,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import seaborn as sns
+from pandas.plotting import register_matplotlib_converters
 
 sns.set(style='white')
-sns.set_context('notebook')   
+sns.set_context('notebook') 
+register_matplotlib_converters  
 
 # parameters
-
 
 grace_minutes = 2
 min_duration = 0.9
@@ -71,10 +72,10 @@ def read_chat(chat_file, meeting_date):
         time = line.split()[0]
         date = meeting_date + ' ' + time
         if private:
-            name = (line[16:].split(' to ')[0]).rstrip()
+            name = (line.split(' From ')[1].split(' to ')[0]).strip()
         else:
-            name = (line[16:].split(':')[0]).rstrip()
-        name = re.sub(' \(.*\)', '', name)
+            name = (line.split(' From ')[1].split(':')[0]).strip()
+        name = re.sub(' \(.*\)', '', name)  # remove nickname
         tbl.append([name, date, private])
         
     df = pd.DataFrame(tbl, columns=['name', 'date', 'private'])
@@ -163,7 +164,7 @@ def students_without_answer(chat, start, end, names):
     """ Return a list of students who did not send a private chat
         between times start and end. """
         
-    answered = chat[(chat['date'] > start) & (chat['date'] < end)]['name'].unique()
+    answered = chat[(chat['date'] >= start) & (chat['date'] <= end)]['name'].unique()
     unanswered = list(set(names) - set(answered))
     return unanswered
 
@@ -383,18 +384,21 @@ def main():
 def test():
     
     zoom_dir = "C:/Users/Glenn/Google Drive/CSUMB/Spring21/video/"
-    course = "OS"       
-    meeting_date = '2021-02-03'
+    course = "Data Science"       
+    meeting_date = '2021-02-09'
  
     if course == "OS":
         start_time = '10:00:00 AM'  
         end_time =   '11:50:00 AM' 
-    if course == "Data Science":
+    elif course == "Data Science":
         start_time = '02:00:00 PM' 
         end_time =   '03:50:00 PM'
-    if course == "Logic":
+    elif course == "Logic":
         start_time = '10:00:00 AM'
         end_time =   '11:20:00 AM'
+    else:
+        raise SystemExit('error: No course {}'.format(course))
+
     
     make_attendance_plot(zoom_dir, course, meeting_date, [start_time, end_time])    
     
