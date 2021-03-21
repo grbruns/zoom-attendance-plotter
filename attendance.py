@@ -36,7 +36,7 @@ from pandas.plotting import register_matplotlib_converters
 
 sns.set(style='white')
 sns.set_context('notebook') 
-register_matplotlib_converters  
+register_matplotlib_converters()
 
 # parameters
 
@@ -62,6 +62,10 @@ def read_participation(participation_file):
 
 def read_chat(chat_file, meeting_date):
     """ Return data frame with user name and chat time. """
+    
+    if chat_file == "":
+        return pd.DataFrame({'name':[], 'date':[], 'private':[]})
+    
     tbl = []
     for line in open(chat_file, encoding='utf8'):
         # validate the line
@@ -177,26 +181,33 @@ def make_attendance_plot(zoom_dir, course, meeting_date, classtime, outfile_name
     #
     
     meeting_dir = list(Path(zoom_dir).glob('*'+meeting_date+'*'+course+'*'))
-    if len(meeting_dir) != 1:
-        raise SystemExit('error: not exactly 1 zoom meeting for {} on date {}'.format(course, meeting_date))
+    if len(meeting_dir) == 0:
+        raise SystemExit('error: no Zoom meeting file for {} on date {}'.format(course, meeting_date))
+    elif len(meeting_dir) > 1:
+        raise SystemExit('error: more than 1 Zoom meeting file for {} on date {}'.format(course, meeting_date))
     else:
         meeting_dir = meeting_dir[0]
         
     roster_file = list(Path(zoom_dir).glob(course+'*.csv'))
     if len(roster_file) != 1:
-        raise SystemExit('error: No file {}*.csv in {}'.format(course, zoom_dir))
+        raise SystemExit('error: no roster file {}*.csv in {}'.format(course, zoom_dir))
     else:
         roster_file = roster_file[0]
     
     participation_file = list(meeting_dir.glob('participants*.csv'))
-    if len(participation_file) != 1:
-        raise SystemExit('error: not exactly 1 participation file in {}'.format(meeting_dir))
+    if len(participation_file) == 0:
+        raise SystemExit('error: no participation file in {}'.format(meeting_dir))
+    elif len(participation_file) > 1:
+        raise SystemExit('error: more than 1 participation file in {}'.format(meeting_dir))
     else:
         participation_file = participation_file[0]
         
     chat_file = list(meeting_dir.glob('chat.txt'))
-    if len(chat_file) != 1:
-        raise SystemExit('error: not exactly 1 chat file in {}'.format(meeting_dir))
+    if len(chat_file) == 0:
+        print('warning: no chat file in {}; assuming no chat data'.format(meeting_dir))
+        chat_file = ""
+    elif len(chat_file) > 1:
+        raise SystemExit('error: more than 1 chat file in {}'.format(meeting_dir))
     else:
         chat_file = chat_file[0]
         
